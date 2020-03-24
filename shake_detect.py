@@ -2,10 +2,13 @@ import os
 import cv2
 import numpy as np
 from keras.utils.np_utils import to_categorical
+from keras.applications.imagenet_utils import decode_predictions
 from keras import models
 from keras import layers
 from keras import optimizers
 from keras import losses
+import matplotlib.pyplot as plt
+import json
 
 # --------------------------------------------
 img_rows, img_cols, num_frames = 320, 180, 149
@@ -156,9 +159,9 @@ if model_exist:
 else:
     model = models.Sequential()
 
-    model.add(layers.Dense(256, activation='relu', input_shape = (img_rows * img_cols, )))
+    model.add(layers.Dense(512, activation='relu', input_shape = (img_rows * img_cols, )))
 
-    model.add(layers.Dense(256,activation='relu'))    
+    model.add(layers.Dense(512,activation='relu'))    
     model.add(layers.Dense(1, activation='sigmoid'))
 
     model.summary()
@@ -172,5 +175,19 @@ else:
                         epochs=8,
                         batch_size=512,
                         validation_data=(X_val_array, val_labels))
-    results = model.evaluate(X_test_array, test_labels)
+    results = model.predict_classes(X_test_array)
+    results = results.reshape((test_nums, labels_nums))
     print(results)
+    time = range(1,num_frames+1)
+    for k in range(5):
+      json_data={"Shake":[]}
+      for i in range(labels_nums):
+        json_data["Shake"].append([i/24,int(results[k][i])])
+      json_path = "/content/drive/My Drive/dataset/json/test"+ str(k)+".json"
+      with open(json_path ,'w') as f:
+        json.dump(json_data, f)       
+      plt.figure()
+      plt.plot(time, results[k],'bo')
+      plt.xlabel("frames")
+      plt.ylabel("class")
+      plt.show()
