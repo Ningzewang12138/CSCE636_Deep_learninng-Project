@@ -13,8 +13,8 @@ Json files: /csce636/dataset/json/
 Usage:
 After downloading the dataset, please put the test video into path below:
 /csce636/dataset/RGB/test/
-open shake_detect.py, at the beginning of the code, modify the path varaiables.
-Then run ./shake_detect.py
+open main.py, at the beginning of the code, modify the path varaiables.
+Then run ./main.py
 
 
 
