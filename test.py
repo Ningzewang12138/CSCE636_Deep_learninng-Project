@@ -17,7 +17,7 @@ print(cur_path)
 
 test_file = sys.argv[1]
 
-test_data_path = cur_path +"/RGB/test/" + test_file
+test_data_path = cur_path +"/RGB/" + test_file
 json_save_path = cur_path + "/json/test/" 
 model_save_path = cur_path + "/model/827006879.h5"
 plt_save_path = cur_path +"/figure/test/" + test_file + ".png" 
